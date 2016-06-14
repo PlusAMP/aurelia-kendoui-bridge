@@ -284,6 +284,11 @@ export class WidgetBase {
   */
   destroy(widget) {
     if (widget) {
+      let element = widget.element;
+      if(element) {
+        element.empty();
+        element.remove();
+      }
       kendo.destroy(widget.element);
       widget = null;
 
