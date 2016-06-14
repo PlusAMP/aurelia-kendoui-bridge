@@ -104,9 +104,9 @@ require('kendo.listview.min');
 
 require('kendo.dataviz.map.min');
 
-require('kendo.maskedtextbox.min');
-
 require('kendo.menu.min');
+
+require('kendo.maskedtextbox.min');
 
 require('kendo.multiselect.min');
 
@@ -1815,6 +1815,11 @@ var WidgetBase = (function () {
 
   WidgetBase.prototype.destroy = function destroy(widget) {
     if (widget) {
+      var element = widget.element;
+      if (element) {
+        element.empty();
+        element.remove();
+      }
       kendo.destroy(widget.element);
       widget = null;
 
@@ -2794,6 +2799,44 @@ var Map = (function () {
 
 exports.Map = Map;
 
+var Menu = (function () {
+  function Menu(element, widgetBase) {
+    _classCallCheck(this, _Menu);
+
+    this.element = element;
+    this.widgetBase = widgetBase.control('kendoMenu').linkViewModel(this);
+  }
+
+  Menu.prototype.bind = function bind(ctx) {
+    this.$parent = ctx;
+  };
+
+  Menu.prototype.attached = function attached() {
+    if (!this.kNoInit) {
+      this.recreate();
+    }
+  };
+
+  Menu.prototype.recreate = function recreate() {
+    this.kWidget = this.widgetBase.createWidget({
+      element: this.element,
+      parentCtx: this.$parent
+    });
+  };
+
+  Menu.prototype.detached = function detached() {
+    this.widgetBase.destroy(this.kWidget);
+  };
+
+  var _Menu = Menu;
+  Menu = _aureliaDependencyInjection.inject(Element, WidgetBase)(Menu) || Menu;
+  Menu = generateBindables('kendoMenu')(Menu) || Menu;
+  Menu = _aureliaTemplating.customAttribute(constants.attributePrefix + 'menu')(Menu) || Menu;
+  return Menu;
+})();
+
+exports.Menu = Menu;
+
 var MaskedTextBox = (function () {
   var _instanceInitializers15 = {};
 
@@ -2860,44 +2903,6 @@ var MaskedTextBox = (function () {
 })();
 
 exports.MaskedTextBox = MaskedTextBox;
-
-var Menu = (function () {
-  function Menu(element, widgetBase) {
-    _classCallCheck(this, _Menu);
-
-    this.element = element;
-    this.widgetBase = widgetBase.control('kendoMenu').linkViewModel(this);
-  }
-
-  Menu.prototype.bind = function bind(ctx) {
-    this.$parent = ctx;
-  };
-
-  Menu.prototype.attached = function attached() {
-    if (!this.kNoInit) {
-      this.recreate();
-    }
-  };
-
-  Menu.prototype.recreate = function recreate() {
-    this.kWidget = this.widgetBase.createWidget({
-      element: this.element,
-      parentCtx: this.$parent
-    });
-  };
-
-  Menu.prototype.detached = function detached() {
-    this.widgetBase.destroy(this.kWidget);
-  };
-
-  var _Menu = Menu;
-  Menu = _aureliaDependencyInjection.inject(Element, WidgetBase)(Menu) || Menu;
-  Menu = generateBindables('kendoMenu')(Menu) || Menu;
-  Menu = _aureliaTemplating.customAttribute(constants.attributePrefix + 'menu')(Menu) || Menu;
-  return Menu;
-})();
-
-exports.Menu = Menu;
 
 var Multiselect = (function () {
   var _instanceInitializers16 = {};

@@ -1791,6 +1791,11 @@ export class WidgetBase {
   */
   destroy(widget) {
     if (widget) {
+      let element = widget.element;
+      if(element) {
+        element.empty();
+        element.remove();
+      }
       kendo.destroy(widget.element);
       widget = null;
 
@@ -2600,6 +2605,42 @@ export class Map {
   }
 }
 
+import 'kendo.menu.min';
+
+@customAttribute(`${constants.attributePrefix}menu`)
+@generateBindables('kendoMenu')
+@inject(Element, WidgetBase)
+export class Menu {
+
+  constructor(element, widgetBase) {
+    this.element = element;
+    this.widgetBase = widgetBase
+                        .control('kendoMenu')
+                        .linkViewModel(this);
+  }
+
+  bind(ctx) {
+    this.$parent = ctx;
+  }
+
+  attached() {
+    if (!this.kNoInit) {
+      this.recreate();
+    }
+  }
+
+  recreate() {
+    this.kWidget = this.widgetBase.createWidget({
+      element: this.element,
+      parentCtx: this.$parent
+    });
+  }
+
+  detached() {
+    this.widgetBase.destroy(this.kWidget);
+  }
+}
+
 import 'kendo.maskedtextbox.min';
 
 @customAttribute(`${constants.attributePrefix}maskedtextbox`)
@@ -2640,42 +2681,6 @@ export class MaskedTextBox {
 
   propertyChanged(property, newValue, oldValue) {
     this.widgetBase.handlePropertyChanged(this.kWidget, property, newValue, oldValue);
-  }
-
-  detached() {
-    this.widgetBase.destroy(this.kWidget);
-  }
-}
-
-import 'kendo.menu.min';
-
-@customAttribute(`${constants.attributePrefix}menu`)
-@generateBindables('kendoMenu')
-@inject(Element, WidgetBase)
-export class Menu {
-
-  constructor(element, widgetBase) {
-    this.element = element;
-    this.widgetBase = widgetBase
-                        .control('kendoMenu')
-                        .linkViewModel(this);
-  }
-
-  bind(ctx) {
-    this.$parent = ctx;
-  }
-
-  attached() {
-    if (!this.kNoInit) {
-      this.recreate();
-    }
-  }
-
-  recreate() {
-    this.kWidget = this.widgetBase.createWidget({
-      element: this.element,
-      parentCtx: this.$parent
-    });
   }
 
   detached() {

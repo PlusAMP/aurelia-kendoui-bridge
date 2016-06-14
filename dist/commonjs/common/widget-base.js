@@ -219,6 +219,11 @@ var WidgetBase = (function () {
 
   WidgetBase.prototype.destroy = function destroy(widget) {
     if (widget) {
+      var element = widget.element;
+      if (element) {
+        element.empty();
+        element.remove();
+      }
       kendo.destroy(widget.element);
       widget = null;
 

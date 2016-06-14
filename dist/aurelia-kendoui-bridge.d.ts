@@ -55,8 +55,8 @@ declare module 'aurelia-kendoui-bridge' {
   import 'kendo.grid.min';
   import 'kendo.listview.min';
   import 'kendo.dataviz.map.min';
-  import 'kendo.maskedtextbox.min';
   import 'kendo.menu.min';
+  import 'kendo.maskedtextbox.min';
   import 'kendo.multiselect.min';
   import 'kendo.virtuallist.min';
   import 'kendo.notification.min';
@@ -745,6 +745,13 @@ declare module 'aurelia-kendoui-bridge' {
     propertyChanged(property: any, newValue: any, oldValue: any): any;
     detached(): any;
   }
+  export class Menu {
+    constructor(element: any, widgetBase: any);
+    bind(ctx: any): any;
+    attached(): any;
+    recreate(): any;
+    detached(): any;
+  }
   export class MaskedTextBox {
     kDisableDates: any;
     kEnabled: any;
@@ -754,13 +761,6 @@ declare module 'aurelia-kendoui-bridge' {
     attached(): any;
     recreate(): any;
     propertyChanged(property: any, newValue: any, oldValue: any): any;
-    detached(): any;
-  }
-  export class Menu {
-    constructor(element: any, widgetBase: any);
-    bind(ctx: any): any;
-    attached(): any;
-    recreate(): any;
     detached(): any;
   }
   export class Multiselect {
