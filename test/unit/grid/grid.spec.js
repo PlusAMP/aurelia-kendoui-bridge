@@ -60,4 +60,13 @@ describe('Grid', () => {
     expect(sut.element.querySelectorAll('div').length).toBeGreaterThan(0);
     expect(sut.target.nodeName).toBe('DIV');
   });
+
+  it('should properly destroy itself when detached', () => {
+    sut.attached();
+    let el = sut.kWidget.element;
+    expect(el.children().length).not.toBe(0);
+    sut.detached();
+    expect(el.children().length).toBe(0);
+  });
+
 });

@@ -281,9 +281,14 @@ export class WidgetBase {
 
   /**
   * destroys the widget
+  * reference: http://docs.telerik.com/kendo-ui/intro/widget-basics/destroy
   */
   destroy(widget) {
     if (widget) {
+      let element = widget.element;
+      if(element) {
+        element.empty();
+      }
       kendo.destroy(widget.element);
       widget = null;
 
